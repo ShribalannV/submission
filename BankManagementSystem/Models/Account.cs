@@ -3,37 +3,31 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BankManagementSystem.Models
 {
-    public enum AccountType
-    {
-        Savings,
-        Current,
-        TermDeposit,
-        NRI
-    }
-
     public class Account
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int AccountId { get; set; }
 
-        [ForeignKey("User")]
-        public int UserId { get; set; }
-        public User? User { get; set; }
+        [Required]
+        [MaxLength(20)]
+        public string AccountNumber { get; set; } = Guid.NewGuid().ToString().Substring(0, 10).ToUpper();
 
-        [ForeignKey("Branch")]
-        public int BranchId { get; set; }
-        public Branch? Branch { get; set; }
+        [Required]
+        public int UserId { get; set; }   // foreign key
 
-        public AccountType AccountType { get; set; }
+        [ForeignKey(nameof(UserId))]
+        public User User { get; set; }
 
-        public string Currency { get; set; } = "INR";
+        [Required]
+        [MaxLength(20)]
+        public string AccountType { get; set; }  // "Savings", "Current", "NRI", etc.
 
-        public decimal Balance { get; set; }
+        [Required]
+        public decimal Balance { get; set; } = 0;
 
-        public bool IsMinor { get; set; } = false;
+        public bool IsActive { get; set; } = true;
 
-        public string Status { get; set; } = "Active";
-
-        public ICollection<Transaction>? Transactions { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }
