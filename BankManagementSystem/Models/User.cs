@@ -1,14 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BankManagementSystem.Models
 {
-    public enum UserRole
-    {
-        Customer,
-        Minor,
-        POA
-    }
-
+    [Table("Users", Schema = "training")]
     public class User
     {
         [Key]
@@ -17,21 +13,17 @@ namespace BankManagementSystem.Models
         [Required]
         public string FullName { get; set; }
 
-        public DateTime DateOfBirth { get; set; }
-
-        [Required]
+        [Required, EmailAddress]
         public string Email { get; set; }
 
         [Required]
         public string PasswordHash { get; set; }
-        public string Password { get; set; }
 
-        public UserRole Role { get; set; } = UserRole.Customer;
 
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public string Role { get; set; } = "User";
 
-        public string Status { get; set; } = "Active";
+        public bool Status { get; set; } = true;
 
-        public ICollection<Account>? Accounts { get; set; }
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }

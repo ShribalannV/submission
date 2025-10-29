@@ -9,12 +9,12 @@ namespace BankManagementSystem.Data
 
         public DbSet<User> Users { get; set; }
         public DbSet<Bank> Banks { get; set; }
-        public DbSet<Branch> Branches { get; set; }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.HasDefaultSchema("training");
             base.OnModelCreating(modelBuilder);
         }
     }

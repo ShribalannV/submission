@@ -23,56 +23,39 @@ namespace BankManagementSystem.Controllers
             _config = config;
         }
 
-       
-        public class RegisterRequest
-        {
-            public string FullName { get; set; }
-            public string Email { get; set; }
-            public string Password { get; set; }
-            public string Role { get; set; } 
-        }
-
         
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterRequest request)
+        public async Task<IActionResult> Register(User user)
         {
-            if (await _context.Users.AnyAsync(u => u.Email == request.Email))
-                return BadRequest(new { message = "Email already exists." });
+            if (await _context.Users.AnyAsync(u => u.Email == user.Email))
+                return BadRequest("Email already exists.");
 
-            if (!Enum.TryParse<UserRole>(request.Role, true, out var parsedRole))
-                return BadRequest(new { message = "Invalid role. Use Customer, BankEmployee, or Admin." });
+           
+            user.PasswordHash = user.PasswordHash;
+            user.CreatedAt = DateTime.UtcNow;
+            user.Status = true;
 
-            var newUser = new User
-            {
-                FullName = request.FullName,
-                Email = request.Email,
-                Password = request.Password, 
-                Role = parsedRole,
-                CreatedAt = DateTime.UtcNow,
-                Status = "Active"
-            };
-
-            _context.Users.Add(newUser);
+            _context.Users.Add(user);
             await _context.SaveChangesAsync();
 
-            return Ok(new { message = "User registered successfully!" });
+            return Ok("User registered successfully!");
         }
 
         
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] User login)
         {
-            var foundUser = await _context.Users
-                .FirstOrDefaultAsync(u => u.Email == login.Email && u.Password == login.Password);
+            var user = await _context.Users
+                .FirstOrDefaultAsync(u => u.Email == login.Email && u.PasswordHash == login.PasswordHash);
 
-            if (foundUser == null)
+            if (user == null)
                 return Unauthorized("Invalid email or password.");
 
-            var token = GenerateJwtToken(foundUser);
-            return Ok(new { Token = token, foundUser.FullName, foundUser.Role });
+            var token = GenerateJwtToken(user);
+            return Ok(new { Token = token, user.FullName, user.Role });
         }
 
-        
+       
         private string GenerateJwtToken(User user)
         {
             var jwtSettings = _config.GetSection("Jwt");
@@ -82,8 +65,8 @@ namespace BankManagementSystem.Controllers
             var claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Email),
-                new Claim("role", user.Role.ToString()),
-                new Claim("name", user.FullName),
+                new Claim("role", user.Role ?? "User"),
+                new Claim("name", user.FullName ?? ""),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 

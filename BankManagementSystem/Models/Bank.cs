@@ -1,7 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BankManagementSystem.Models
 {
+    [Table("Banks", Schema = "training")]
     public class Bank
     {
         [Key]
@@ -10,8 +12,6 @@ namespace BankManagementSystem.Models
         [Required]
         public string BankName { get; set; }
 
-        public string HeadOffice { get; set; }
-
-        public ICollection<Branch>? Branches { get; set; }
+        public string IFSCCode { get; set; }
     }
 }

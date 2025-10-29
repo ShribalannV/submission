@@ -3,31 +3,26 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BankManagementSystem.Models
 {
+    [Table("Accounts", Schema = "training")]
     public class Account
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int AccountId { get; set; }
 
-        [Required]
-        [MaxLength(20)]
-        public string AccountNumber { get; set; } = Guid.NewGuid().ToString().Substring(0, 10).ToUpper();
+        public string AccountNumber { get; set; }
 
         [Required]
-        public int UserId { get; set; }   // foreign key
-
-        [ForeignKey(nameof(UserId))]
-        public User User { get; set; }
+        public int UserId { get; set; }
 
         [Required]
-        [MaxLength(20)]
-        public string AccountType { get; set; }  // "Savings", "Current", "NRI", etc.
+        public int BankId { get; set; }
 
-        [Required]
         public decimal Balance { get; set; } = 0;
 
-        public bool IsActive { get; set; } = true;
+        [ForeignKey("UserId")]
+        public User User { get; set; }
 
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        [ForeignKey("BankId")]
+        public Bank Bank { get; set; }
     }
 }

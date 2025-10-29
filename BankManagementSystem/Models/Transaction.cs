@@ -1,30 +1,27 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BankManagementSystem.Models
 {
-    public enum TransactionType
-    {
-        Deposit,
-        Withdraw,
-        Transfer
-    }
-
+    [Table("Transactions", Schema = "training")]
     public class Transaction
     {
         [Key]
         public int TransactionId { get; set; }
 
-        [ForeignKey("Account")]
+        [Required]
         public int AccountId { get; set; }
-        public Account? Account { get; set; }
 
-        public TransactionType Type { get; set; }
-
+        [Required]
         public decimal Amount { get; set; }
 
-        public string Description { get; set; }
+        [Required]
+        public string Type { get; set; } // Deposit or Withdraw
 
-        public DateTime TransactionDate { get; set; } = DateTime.Now;
+        public DateTime TransactionDate { get; set; } = DateTime.UtcNow;
+
+        [ForeignKey("AccountId")]
+        public Account Account { get; set; }
     }
 }

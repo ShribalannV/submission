@@ -4,6 +4,7 @@ using BankManagementSystem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BankManagementSystem.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251029053812_AddPasswordColumnToUsers")]
+    partial class AddPasswordColumnToUsers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,24 +36,32 @@ namespace BankManagementSystem.Migrations
 
                     b.Property<string>("AccountNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("AccountType")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<decimal>("Balance")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("BankId")
+                    b.Property<int?>("BranchId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("AccountId");
 
-                    b.HasIndex("BankId");
+                    b.HasIndex("BranchId");
 
                     b.HasIndex("UserId");
 
@@ -65,24 +76,47 @@ namespace BankManagementSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BankId"));
 
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
                     b.Property<string>("BankName")
                         .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("BranchCode")
+                    b.Property<string>("HeadOffice")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("BankId");
 
                     b.ToTable("Banks", "training");
+                });
+
+            modelBuilder.Entity("BankManagementSystem.Models.Branch", b =>
+                {
+                    b.Property<int>("BranchId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BranchId"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("BankId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("BranchCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("BranchId");
+
+                    b.HasIndex("BankId");
+
+                    b.ToTable("Branches", "training");
                 });
 
             modelBuilder.Entity("BankManagementSystem.Models.Transaction", b =>
@@ -99,12 +133,15 @@ namespace BankManagementSystem.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("TransactionDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("TransactionType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
 
                     b.HasKey("TransactionId");
 
@@ -124,46 +161,42 @@ namespace BankManagementSystem.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("DateOfBirth")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FullName")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Role")
+                    b.Property<string>("PasswordHash")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
 
                     b.Property<string>("Status")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserId");
-
-                    b.HasIndex("Email")
-                        .IsUnique();
 
                     b.ToTable("Users", "training");
                 });
 
             modelBuilder.Entity("BankManagementSystem.Models.Account", b =>
                 {
-                    b.HasOne("BankManagementSystem.Models.Bank", "Bank")
+                    b.HasOne("BankManagementSystem.Models.Branch", null)
                         .WithMany("Accounts")
-                        .HasForeignKey("BankId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("BranchId");
 
                     b.HasOne("BankManagementSystem.Models.User", "User")
                         .WithMany("Accounts")
@@ -171,15 +204,24 @@ namespace BankManagementSystem.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Bank");
-
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("BankManagementSystem.Models.Branch", b =>
+                {
+                    b.HasOne("BankManagementSystem.Models.Bank", "Bank")
+                        .WithMany("Branches")
+                        .HasForeignKey("BankId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Bank");
                 });
 
             modelBuilder.Entity("BankManagementSystem.Models.Transaction", b =>
                 {
                     b.HasOne("BankManagementSystem.Models.Account", "Account")
-                        .WithMany("Transactions")
+                        .WithMany()
                         .HasForeignKey("AccountId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -187,12 +229,12 @@ namespace BankManagementSystem.Migrations
                     b.Navigation("Account");
                 });
 
-            modelBuilder.Entity("BankManagementSystem.Models.Account", b =>
+            modelBuilder.Entity("BankManagementSystem.Models.Bank", b =>
                 {
-                    b.Navigation("Transactions");
+                    b.Navigation("Branches");
                 });
 
-            modelBuilder.Entity("BankManagementSystem.Models.Bank", b =>
+            modelBuilder.Entity("BankManagementSystem.Models.Branch", b =>
                 {
                     b.Navigation("Accounts");
                 });
