@@ -24,16 +24,37 @@ namespace BankManagementSystem.Controllers
         }
 
         
-        [HttpPost("register")]
-        public async Task<IActionResult> Register(User user)
+        public class RegisterRequest
         {
-            if (await _context.Users.AnyAsync(u => u.Email == user.Email))
+            public string FullName { get; set; }
+            public string Email { get; set; }
+            public string Password { get; set; }  
+            public string Role { get; set; } = "Customer";
+        }
+
+        
+        public class LoginRequest
+        {
+            public string Email { get; set; }
+            public string Password { get; set; }
+        }
+
+        
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] RegisterRequest request)
+        {
+            if (await _context.Users.AnyAsync(u => u.Email == request.Email))
                 return BadRequest("Email already exists.");
 
-           
-            user.PasswordHash = user.PasswordHash;
-            user.CreatedAt = DateTime.UtcNow;
-            user.Status = true;
+            var user = new User
+            {
+                FullName = request.FullName,
+                Email = request.Email,
+                PasswordHash = request.Password, 
+                Role = request.Role,
+                CreatedAt = DateTime.UtcNow,
+                Status = true
+            };
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
@@ -43,10 +64,10 @@ namespace BankManagementSystem.Controllers
 
         
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] User login)
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
             var user = await _context.Users
-                .FirstOrDefaultAsync(u => u.Email == login.Email && u.PasswordHash == login.PasswordHash);
+                .FirstOrDefaultAsync(u => u.Email == request.Email && u.PasswordHash == request.Password);
 
             if (user == null)
                 return Unauthorized("Invalid email or password.");
@@ -55,7 +76,7 @@ namespace BankManagementSystem.Controllers
             return Ok(new { Token = token, user.FullName, user.Role });
         }
 
-       
+        
         private string GenerateJwtToken(User user)
         {
             var jwtSettings = _config.GetSection("Jwt");
