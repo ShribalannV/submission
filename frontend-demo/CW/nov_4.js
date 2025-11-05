@@ -227,4 +227,8 @@ try {
     let genObj = genFour();
 } catch (error) {
     console.error("Error in generator 'genFour':", error);
+    
 }
+
+
+   

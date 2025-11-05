@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Time Updating Button</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 100px;
+      background-color: #f5f5f5;
+    }
+
+    button {
+      padding: 15px 25px;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 10px;
+      background-color: #007bff;
+      color: white;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    #toggleButton {
+      background-color: #28a745;
+    }
+
+    #toggleButton:hover {
+      background-color: #1e7e34;
+    }
+  </style>
+</head>
+<body>
+
+  <button id="timeButton">Loading time...</button>
+  <button id="toggleButton">Stop</button>
+
+  <script>
+    let timerId;  // store interval ID
+    let running = true;  // track state
+
+    // Function to get current time
+    function getCurrentTime() {
+      const now = new Date();
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+      return `${hours}:${minutes}:${seconds}`;
+    }
+
+    // Function to update the time on the button
+    function updateTime() {
+      document.getElementById('timeButton').textContent = `Current Time: ${getCurrentTime()}`;
+    }
+
+    // Start interval timer
+    function startTimer() {
+      updateTime(); // update once immediately
+      timerId = setInterval(updateTime, 2000); // every 2 seconds
+    }
+
+    // Stop interval timer
+    function stopTimer() {
+      clearInterval(timerId);
+    }
+
+    // Toggle start/stop
+    document.getElementById('toggleButton').addEventListener('click', function() {
+      if (running) {
+        stopTimer();
+        this.textContent = "Start";
+      } else {
+        startTimer();
+        this.textContent = "Stop";
+      }
+      running = !running;
+    });
+
+    // Start updating when page loads
+    startTimer();
+  </script>
+
+</body>
+</html>

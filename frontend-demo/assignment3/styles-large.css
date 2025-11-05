@@ -1,0 +1,76 @@
+
+:root {
+    font-size: 1rem;
+}
+
+body {
+    margin: 0;
+    font-family: system-ui, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(90deg, #ececec, #fafafa);
+}
+
+/* Dark Mode */
+.dark-mode,
+.dark-mode body,
+.dark-mode html {
+    background: black !important;
+    color: white !important;
+}
+
+.dark-mode .color-box {
+    border: 1px solid white;
+}
+
+.dark-mode button {
+    background-color: white;
+    color: black;
+    border: 1px solid white;
+}
+
+.dark-mode .container {
+    background: black !important;
+}
+.container {
+    width: 80vw;
+    max-width: 70rem;
+    text-align: center;
+}
+
+.container__title {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.container__subtitle {
+    font-size: 1.2rem;
+    margin-block: 1rem;
+}
+
+.container__colors {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+    gap: 2rem;
+    padding: 2rem;
+}
+
+.color-list > div {
+    padding: 2rem;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    font-weight: 600;
+    background: #ccc;
+    cursor: pointer;
+    transition: transform .2s;
+}
+
+.color-list > div:hover {
+    transform: scale(1.1);
+}
+

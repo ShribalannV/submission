@@ -1,67 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Shri Page</title>
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet" />
+    <title>Shri Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- HEADER SECTION -->
-  <header>
+
+<header>
+    <img src="">
     <h3>Logo</h3>
-    <h1>I'm<span>ShriBalann</span></h1>
+    <h1>Hi I'm Shribalann <span class="og">Shri</span></h1>
     <a href="https://www.google.com/" class="button">Say hello to me!!</a>
-  </header>
- 
-  <!-- ABOUT SECTION -->
-  <section>
+</header>
+
+<section id="about">
     <h2>About me</h2>
-    <p>Write all about yourself here!!!!</p>
-  </section>
- 
-  <!-- CONTACT FORM -->
-  <div id="contact-form">
+    <p>I'm Shribalann</p>
+</section>
+
+<!-- Updated Skills Section -->
+<section id="skills">
+    <div class="skill-box java">
+        <h3>Java</h3>
+        <ul>
+            <li>Core Java</li>
+            <li>OOP Concepts</li>
+            <li>Spring Boot</li>
+            <li>JDBC & Hibernate</li>
+        </ul>
+    </div>
+
+    <div class="skill-box python">
+        <h3>Python</h3>
+        <ul>
+            <li>Python Basics</li>
+            <li>Flask / Django</li>
+            <li>Pandas & NumPy</li>
+            <li>Automation Scripts</li>
+        </ul>
+    </div>
+
+    <div class="skill-box dotnet">
+        <h3>.NET</h3>
+        <ul>
+            <li>C#</li>
+            <li>ASP.NET Core</li>
+            <li>Entity Framework</li>
+            <li>Web API</li>
+        </ul>
+    </div>
+</section>
+
+<section id="media-section">
+    <h2>Watch & Listen</h2>
+    <iframe width="350" height="200"
+        src="https://www.youtube.com/embed/1L87a_sR3QA"
+        allowfullscreen></iframe>
+    <audio controls>
+        <source src="https://www2.cs.uic.edu/~i101/SoundFiles/StarWars3.wav" type="audio/wav">
+        Your browser does not support audio playback.
+    </audio>
+</section>
+
+<div id="contactForm">
     <h2>Impressed with my work?</h2>
-    <form method="post" action="shri-m-server">
-      <input type="text" placeholder="Enter your First Name" />
-      <input type="text" placeholder="Enter your Last Name" />
-      <textarea placeholder="Enter your message here..."></textarea>
-      <button type="submit">Send</button>
+    <form>
+        <input type="text" placeholder="Enter your First Name" />
+        <input type="text" placeholder="Enter your Last Name" />
+        <textarea placeholder="Your message"></textarea>
+        <input type="range" name="demo" />
+        <input type="date" />
+        <button type="submit">Send</button>
     </form>
-  </div>
- 
-  <!-- SAMPLE WORK SECTION -->
-  <h2>Here is a sample of a work</h2>
-  <table id="sample-table" cellspacing="0" cellpadding="0">
-    <tr>
-      <td><img src="https://unsplash.it/300/200" /></td>
-      <td><img src="https://unsplash.it/300/200?random" /></td>
-    </tr>
-  </table>
- 
-  <hr style="border-top: 1px solid #fafafa" />
- 
-  <!-- NEWSLETTER SECTION -->
-  <div id="newsletter">
-    <table>
-      <tr>
-        <td colspan="2">
-          <h2>Let's stay connected</h2>
-        </td>
-      </tr>
-      <tr>
-        <td><input type="text" placeholder="Email" /></td>
-        <td><a href="#" class="button">Subscribe</a></td>
-      </tr>
+</div>
+
+<section id="Gallery">
+    <h2>Here are my sample work</h2>
+    <table cellspacing="0" cellpadding="0">
+        <tr>
+            <td><img src="https://tse4.mm.bing.net/th/id/OIP.EK-dQlJm9RK_f9Kir7GMnAAAAA?rs=1&pid=ImgDetMain" width="100"></td>
+            <td><img src="https://tse4.mm.bing.net/th/id/OIP.EK-dQlJm9RK_f9Kir7GMnAAAAA?rs=1&pid=ImgDetMain" width="100"></td>
+            <td><img src="https://tse4.mm.bing.net/th/id/OIP.EK-dQlJm9RK_f9Kir7GMnAAAAA?rs=1&pid=ImgDetMain" width="100"></td>
+        </tr>
+        <tr>
+            <td><img src="https://getwallpapers.com/wallpaper/full/e/3/8/30028.jpg" width="100"></td>
+            <td><img src="https://wallpaperaccess.com/full/721192.jpg" width="100"></td>
+            <td><img src="https://media1.thrillophilia.com/filestore/f147scethqhymux0jci7mj4mvt5z_shutterstock_209978131.jpg" width="100"></td>
+        </tr>
     </table>
-  </div>
- 
-  <!-- FOOTER -->
-  <footer>
-    <p>Copyright © 2024 ShriBalann. All rights reserved.</p>
-  </footer>
+</section>
+
+<section id="newsletter">
+    <h2>Let’s stay connected</h2>
+    <input type="text" placeholder="E-mail">
+    <button id="subscribe-btn">SUBSCRIBE</button>
+</section>
+
+<footer>
+    <p>Made with by <strong>Shribalann</strong></p>
+    <p>© 2025 All rights reserved</p>
+  
+    <div class="github-box">
+      <span>Powered by GitHub</span>
+      <a href="https://github.com/" target="_blank">
+        <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub Logo">
+      </a>
+    </div>
+</footer>
+
 </body>
 </html>
- 
