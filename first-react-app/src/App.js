@@ -1,0 +1,52 @@
+import React, { useEffect, useState } from "react";
+import logo from "./logo.svg";
+import "./App.css";
+
+function App() {
+  const [showCard, setShowCard] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 200) {
+        setShowCard(true);
+      } else {
+        setShowCard(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  return (
+    <div className="App">
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>
+          Edit <code>src/App.js</code> and save to reload.
+        </p>
+        <a
+          className="App-link"
+          href="https://react.dev"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn React
+        </a>
+      </header>
+
+      {/* Card container */}
+      {showCard && (
+        <div className="welcome-card">
+          <h2>Welcome to the Page 🎉</h2>
+          <p>Scroll-triggered card effect with hover style.</p>
+        </div>
+      )}
+
+      {/* Extra space to allow scrolling */}
+      <div style={{ height: "150vh" }}></div>
+    </div>
+  );
+}
+
+export default App;
