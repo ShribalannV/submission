@@ -32,9 +32,8 @@ function findCommon(arr1: unknown, arr2: unknown): unknown[] {
     return [...result];
 }
 
-// ✅ Works
+
 console.log(findCommon([1, 2, 3], [2, 3, 4])); // [2, 3]
 console.log(findCommon("sriram", "rajesh"));   // ['r', 'a']
 
-// ❌ Throws runtime error
-// console.log(findCommon([1, 2, 3, 4], "Rajesh"));
+

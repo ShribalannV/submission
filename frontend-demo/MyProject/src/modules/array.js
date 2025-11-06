@@ -24,10 +24,10 @@ function findCommon(arr1, arr2) {
     }
     return [...result];
 }
-// ✅ Works
+
 console.log(findCommon([1, 2, 3], [2, 3, 4])); // [2, 3]
 console.log(findCommon("sriram", "rajesh")); // ['r', 'a']
 export {};
-// ❌ Throws runtime error
-// console.log(findCommon([1, 2, 3, 4], "Rajesh"));
+
+
 //# sourceMappingURL=array.js.map

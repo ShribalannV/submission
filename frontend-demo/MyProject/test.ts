@@ -73,7 +73,7 @@ function getMedia(mediaName: string): PrintMedia {
         return PrintMedia.NewsPaper;
     }
     else {
-        // ✅ Default fallback
+        
         return PrintMedia.Book;
     }
 }
@@ -82,13 +82,13 @@ let mediaType: PrintMedia = getMedia("Forbes");
 console.log(mediaType);  // Output: magazine
 console.log("-----------------------------------------------");
  
-// ✅ Use constant instead of function for computed enum
+
 const discount = 10;
  
 enum Pricing {
     Base = 100,
-    Discount = discount,        // ✅ Computed from constant
-    Final = Base - discount     // ✅ Expression using constant
+    Discount = discount,        
+    Final = Base - discount     
 }
  
 console.log(Pricing.Base);     // 100

@@ -59,24 +59,24 @@ function getMedia(mediaName) {
         return PrintMedia.NewsPaper;
     }
     else {
-        // ✅ Default fallback
+        
         return PrintMedia.Book;
     }
 }
 let mediaType = getMedia("Forbes");
 console.log(mediaType); // Output: magazine
 console.log("-----------------------------------------------");
-// ✅ Use constant instead of function for computed enum
+
 const discount = 10;
 var Pricing;
 (function (Pricing) {
     Pricing[Pricing["Base"] = 100] = "Base";
     Pricing[Pricing["Discount"] = 10] = "Discount";
-    Pricing[Pricing["Final"] = 90] = "Final"; // ✅ Expression using constant
+    Pricing[Pricing["Final"] = 90] = "Final"; 
 })(Pricing || (Pricing = {}));
-console.log(Pricing.Base); // 100
-console.log(Pricing.Discount); // 10
-console.log(Pricing.Final); // 90
+console.log(Pricing.Base); 
+console.log(Pricing.Discount); 
+console.log(Pricing.Final); 
 console.log("-----------------------------------------------");
 //heterogeneous enum
 var MixedValues;
