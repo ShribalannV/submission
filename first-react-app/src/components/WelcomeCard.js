@@ -36,7 +36,7 @@ function WelcomeCard() {
   return (
     <div style={cardStyle}>
       <h2 style={titleStyle}>Welcome React</h2>
-      <p style={subtitleStyle}>🚀 You’re ready to build awesome UI!</p>
+      <p style={subtitleStyle}> You’re ready to build awesome UI!</p>
     </div>
   );
 }

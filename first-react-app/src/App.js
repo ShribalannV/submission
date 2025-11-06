@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
+import FormComponent from "./components/Formcomponent";
+
 
 function App() {
   const [showCard, setShowCard] = useState(false);
@@ -21,7 +23,6 @@ function App() {
 
   return (
     <div className="App">
-      {/* First full section */}
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
@@ -37,13 +38,15 @@ function App() {
         </a>
       </header>
 
-      {/* Normal flow (not fixed) card section */}
       <section className="scroll-section">
         <div className={`welcome-card ${showCard ? "visible" : ""}`}>
-          <h2>Welcome to the Page 🎉</h2>
+          <h2>Welcome to the Page </h2>
           <p>Enjoy smooth scroll transitions and card hover effects!</p>
         </div>
       </section>
+
+      {/* New Form Component */}
+      <FormComponent />
     </div>
   );
 }
