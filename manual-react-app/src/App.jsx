@@ -6,6 +6,7 @@ import WellKnownPeople from "./components/WellKnownPeople";
 import FIX_ERROR_01 from "./components/FIX_ERROR_01";
 import PeopleData from "./components/PeopleData";
 import Popup from "./components/popup/popup.jsx";
+import TimeColorApp from "./components/TimeColorPicker/TimeColorApp.jsx";
 
 const App = () => {
   // 
@@ -61,6 +62,8 @@ const App = () => {
       >
         <p style={{ whiteSpace: "pre-line" }}>{popupContent.message}</p>
       </Popup>
+
+      <TimeColorApp />
     </div>
   );
 };
