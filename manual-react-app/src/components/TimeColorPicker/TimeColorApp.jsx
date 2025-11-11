@@ -24,8 +24,8 @@ export default function ClockWithColorPicker() {
       <div
         className="clock-card"
         style={{
-          backgroundColor: bgColor,
-          color: bgColor === "yellow" ? "black" : "white",
+          
+          color: bgColor
         }}
       >
         {time}

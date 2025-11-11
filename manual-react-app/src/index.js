@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import App from "./App";
 import FormComponent from "./components/formcomponent.jsx";
 import DisplayComponent from "./components/displaycomponent.jsx";
-
+import TimeColorApp from "./components/TimeColorPicker/TimeColorApp.jsx";
 const RootComponent = () => {
   const [submittedData, setSubmittedData] = useState(null);
 
@@ -22,7 +22,13 @@ const RootComponent = () => {
 
       {/* Display Submitted Data */}
       <DisplayComponent data={submittedData} />
+
+      <div>
+        <TimeColorApp />
+      </div>
+      
     </div>
+
   );
 };
 
