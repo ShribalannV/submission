@@ -9,18 +9,29 @@ import Popup from "./components/popup/popup.jsx";
 // import TimeColorApp from "./components/TimeColorPicker/TimeColorApp.jsx";
 
 const App = () => {
-  // 
+  // Popup visibility
   const [show, setShow] = useState(false);
-  const [popupCounts, setPopupCounts] = useState({ popup1: 0, popup2: 0 });
-  const [popupContent, setPopupContent] = useState({ title: "", message: "" });
 
-  //
+  // Popup counts
+  const [popupCounts, setPopupCounts] = useState({
+    popup1: 0,
+    popup2: 0,
+  });
+
+  // Popup dynamic content
+  const [popupContent, setPopupContent] = useState({
+    title: "",
+    message: "",
+  });
+
+  // Common popup handler
   const handleOpenPopup = (type) => {
     setPopupCounts((prev) => ({
       ...prev,
       [type]: prev[type] + 1,
     }));
 
+    // Content updates dynamically
     const content =
       type === "popup1"
         ? {
@@ -45,13 +56,14 @@ const App = () => {
         lineHeight: "1.6",
       }}
     >
+      {/* Main components */}
       <Greeting />
       <Welcome />
       <Thoughts />
       <PeopleData />
       <FIX_ERROR_01 />
 
-      {/*  Child component is inside the same file */}
+      {/* Child component for popup buttons */}
       <PopupChild popupCounts={popupCounts} handleOpenPopup={handleOpenPopup} />
 
       {/* Reusable popup */}
@@ -71,7 +83,7 @@ const App = () => {
 export default App;
 
 //
-//  Child Component defined inside App.jsx
+// --- Child component ---
 //
 function PopupChild({ popupCounts, handleOpenPopup }) {
   const buttonStyle = {
@@ -92,13 +104,18 @@ function PopupChild({ popupCounts, handleOpenPopup }) {
       <button style={buttonStyle} onClick={() => handleOpenPopup("popup1")}>
         Open Popup 1
       </button>
+
       <button style={buttonStyle} onClick={() => handleOpenPopup("popup2")}>
         Open Popup 2
       </button>
 
       <div style={{ marginTop: "20px", fontSize: "18px" }}>
-        <p>Popup 1 opened: <strong>{popupCounts.popup1}</strong> times</p>
-        <p>Popup 2 opened: <strong>{popupCounts.popup2}</strong> times</p>
+        <p>
+          Popup 1 opened: <strong>{popupCounts.popup1}</strong> times
+        </p>
+        <p>
+          Popup 2 opened: <strong>{popupCounts.popup2}</strong> times
+        </p>
       </div>
     </div>
   );
