@@ -6,6 +6,7 @@ import WellKnownPeople from "./components/WellKnownPeople";
 import FIX_ERROR_01 from "./components/FIX_ERROR_01";
 import PeopleData from "./components/PeopleData";
 import Popup from "./components/popup/popup.jsx";
+import FetchDataComponent from "./components/fetchdatacomponent.jsx";
 // import TimeColorApp from "./components/TimeColorPicker/TimeColorApp.jsx";
 
 const App = () => {
@@ -24,6 +25,9 @@ const App = () => {
     message: "",
   });
 
+  // Data Fetch visibility toggle
+  const [showFetch, setShowFetch] = useState(false);
+
   // Common popup handler
   const handleOpenPopup = (type) => {
     setPopupCounts((prev) => ({
@@ -36,11 +40,15 @@ const App = () => {
       type === "popup1"
         ? {
             title: "Custom Popup 1",
-            message: `This popup is using React 🎉\nYou have opened this ${popupCounts.popup1 + 1} times.`,
+            message: `This popup is using React 🎉\nYou have opened this ${
+              popupCounts.popup1 + 1
+            } times.`,
           }
         : {
             title: "Custom Popup 2",
-            message: `This is another message using the same popup component!\nYou have opened this ${popupCounts.popup2 + 1} times.`,
+            message: `This is another message using the same popup component!\nYou have opened this ${
+              popupCounts.popup2 + 1
+            } times.`,
           };
 
     setPopupContent(content);
@@ -74,6 +82,38 @@ const App = () => {
       >
         <p style={{ whiteSpace: "pre-line" }}>{popupContent.message}</p>
       </Popup>
+
+      {/* Fetch data toggle section */}
+      <div style={{ marginTop: "40px" }}>
+        <button
+          onClick={() => setShowFetch(!showFetch)}
+          style={{
+            padding: "10px 20px",
+            backgroundColor: "#007BFF",
+            color: "white",
+            border: "none",
+            borderRadius: "8px",
+            fontSize: "16px",
+            cursor: "pointer",
+          }}
+        >
+          {showFetch ? "Hide API Data" : "Show API Data"}
+        </button>
+
+        {showFetch && (
+          <div
+            style={{
+              marginTop: "20px",
+              padding: "20px",
+              border: "1px solid #ccc",
+              borderRadius: "10px",
+              background: "#f8f9fa",
+            }}
+          >
+            <FetchDataComponent />
+          </div>
+        )}
+      </div>
 
       {/* <TimeColorApp /> */}
     </div>
