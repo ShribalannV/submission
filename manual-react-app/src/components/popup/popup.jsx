@@ -1,24 +1,24 @@
 import React, { useEffect, useState } from "react";
-import "./popup.css"; // Make sure this path is correct
+import "./popup.css"; // Make sure the path is correct
 
 const Popup = ({ show, onClose, title, children }) => {
   const [isVisible, setIsVisible] = useState(show);
   const [isClosing, setIsClosing] = useState(false);
 
-  // Handle opening/closing animation states
+  // Handle opening/closing animations
   useEffect(() => {
     if (show) {
       setIsVisible(true);
       setIsClosing(false);
     } else if (isVisible) {
-      // Trigger fade out
+      // Trigger closing animation
       setIsClosing(true);
       const timer = setTimeout(() => {
         setIsVisible(false);
-      }, 300); // match the animation duration
+      }, 300); // Match the CSS animation duration
       return () => clearTimeout(timer);
     }
-  }, [show]);
+  }, [show, isVisible]);
 
   if (!isVisible) return null;
 
@@ -29,7 +29,7 @@ const Popup = ({ show, onClose, title, children }) => {
     >
       <div
         className={`popup-box ${isClosing ? "closing" : ""}`}
-        onClick={(e) => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside popup
       >
         <h2 className="popup-title">{title}</h2>
         <div className="popup-content">{children}</div>

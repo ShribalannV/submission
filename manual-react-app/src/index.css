@@ -1,10 +1,11 @@
 body {
     margin: 0;
     font-family: "Inter", sans-serif;
-    background-color: #f8f9fa;
-    color: #333;
+    background: linear-gradient(145deg, #e2e8f0, #f8f9fa);
+    color: #222;
   }
   
+  /* Main layout container */
   .main-container {
     text-align: center;
     margin: 40px auto;
@@ -12,12 +13,16 @@ body {
     padding: 20px;
   }
   
+  /* Title styling */
   .main-title {
-    margin-bottom: 30px;
-    color: #222;
-    font-weight: 600;
+    margin-bottom: 40px;
+    font-weight: 700;
+    font-size: 2rem;
+    color: #1e293b;
+    letter-spacing: 0.5px;
   }
   
+  /* Flex layout for form + console */
   .form-display-wrapper {
     display: flex;
     justify-content: space-between;
@@ -26,19 +31,137 @@ body {
     flex-wrap: wrap;
   }
   
+  /* Each section takes space equally */
   .form-section,
   .display-section {
     flex: 1;
     min-width: 350px;
   }
   
+  /* Form container styling */
+  .form-section {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    padding: 30px;
+    transition: all 0.3s ease;
+  }
+  
+  .form-section:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  }
+  
+  /* Display (console) container */
   .display-section {
     display: flex;
     justify-content: center;
     align-items: flex-start;
   }
   
-  .extra-section {
-    margin-top: 40px;
+  .display-section > div {
+    background: #111827;
+    color: #f8fafc;
+    border-radius: 16px;
+    padding: 25px 30px;
+    width: 100%;
+    min-height: 300px;
+    max-height: 400px;
+    overflow-y: auto;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
   }
+  
+  .display-section > div:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.25);
+  }
+  
+  /* Console title */
+  .display-section h3 {
+    font-size: 1.3rem;
+    color: #38bdf8;
+    margin-bottom: 20px;
+    text-align: center;
+    letter-spacing: 0.3px;
+  }
+  
+  /* Each console line */
+  .console-line {
+    display: flex;
+    justify-content: space-between;
+    background: #1e293b;
+    border-radius: 10px;
+    padding: 12px 16px;
+    margin: 8px 0;
+    font-size: 15px;
+    transition: background 0.3s ease;
+  }
+  
+  .console-line:hover {
+    background: #334155;
+  }
+  
+  .console-key {
+    color: #93c5fd;
+    font-weight: 500;
+  }
+  
+  .console-value {
+    color: #f1f5f9;
+    font-weight: 400;
+  }
+  
+  /* Extra section (bottom) */
+  .extra-section {
+    margin-top: 50px;
+  }
+  
+  /* Scrollbar design (modern thin scroll) */
+  .display-section > div::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .display-section > div::-webkit-scrollbar-thumb {
+    background: #475569;
+    border-radius: 10px;
+  }
+  
+  .display-section > div::-webkit-scrollbar-thumb:hover {
+    background: #64748b;
+  }
+  /* Modern Navbar Styling */
+.navbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    background: #1e293b;
+    padding: 15px 25px;
+    border-radius: 14px;
+    margin-bottom: 40px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+  .nav-link {
+    color: #e2e8f0;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 10px 20px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+  }
+  
+  .nav-link:hover {
+    background-color: #334155;
+    color: #fff;
+  }
+  
+  .nav-link.active {
+    background-color: #2563eb;
+    color: #fff;
+    box-shadow: 0 3px 10px rgba(37, 99, 235, 0.4);
+  }
+  
   

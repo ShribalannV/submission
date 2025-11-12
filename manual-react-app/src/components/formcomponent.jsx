@@ -1,81 +1,84 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setField, submitForm, resetForm } from "../features/formSlice.js"; // ✅ fixed path
+import { setField, submitForm, resetForm } from "../features/formSlice";
+import Popup from "./popup/popup.jsx";
 import "./formcomponent.css";
-
 
 export default function FormComponent() {
   const dispatch = useDispatch();
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [token, setToken] = useState(null);
-
-  const generateToken = () => {
-    return "TOK-" + Math.random().toString(36).substring(2, 10).toUpperCase();
-  };
+  const { username, email, password, submittedData } = useSelector(
+    (state) => state.form
+  );
+  const [showPopup, setShowPopup] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const existingToken = token || generateToken(); // reuse token if already exists
-    setToken(existingToken);
-
-    const data = { username, email, password, token: existingToken };
-    dispatch(submitForm(data));
-
-    // optional clear fields
-    setUsername("");
-    setEmail("");
-    setPassword("");
+    dispatch(submitForm()); // snapshot submittedData
+    setShowPopup(true); // show popup
+    dispatch(resetForm()); // reset only input fields
   };
 
-  const handleClear = () => {
-    dispatch(resetForm());
-    setUsername("");
-    setEmail("");
-    setPassword("");
-  };
+  useEffect(() => {
+    if (showPopup) {
+      const timer = setTimeout(() => setShowPopup(false), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [showPopup]);
 
   return (
-    <form onSubmit={handleSubmit} className="form-container">
-      <h2 className="form-title">User Submission Form</h2>
+    <div className="form-section modern-form">
+      <h2 className="form-title">Modern Redux Form</h2>
+      <form onSubmit={handleSubmit}>
+        <div className="input-group">
+          <label>Username</label>
+          <input
+            type="text"
+            placeholder="Enter username"
+            value={username}
+            onChange={(e) =>
+              dispatch(setField({ name: "username", value: e.target.value }))
+            }
+          />
+        </div>
+        <div className="input-group">
+          <label>Email</label>
+          <input
+            type="email"
+            placeholder="Enter email"
+            value={email}
+            onChange={(e) =>
+              dispatch(setField({ name: "email", value: e.target.value }))
+            }
+          />
+        </div>
+        <div className="input-group">
+          <label>Password</label>
+          <input
+            type="password"
+            placeholder="Enter password"
+            value={password}
+            onChange={(e) =>
+              dispatch(setField({ name: "password", value: e.target.value }))
+            }
+          />
+        </div>
+        <div className="button-group">
+          <button type="submit" className="submit-btn">
+            Submit
+          </button>
+          <button
+            type="button"
+            className="reset-btn"
+            onClick={() => dispatch(resetForm())}
+          >
+            Reset
+          </button>
+        </div>
+      </form>
 
-      <input
-        type="text"
-        placeholder="Username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        required
-      />
-
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-      />
-
-      <div className="button-group">
-        <button type="submit">Submit</button>
-        <button type="button" onClick={handleClear}>
-          Reset
-        </button>
-      </div>
-
-      {token && (
-        <p className="token-display">
-          🪪 Your Token: <strong>{token}</strong>
-        </p>
-      )}
-    </form>
+      <Popup show={showPopup} onClose={() => setShowPopup(false)} title="Success">
+        <p> Data Submitted Successfully!</p>
+      </Popup>
+    </div>
   );
 }

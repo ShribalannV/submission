@@ -1,0 +1,147 @@
+/* 🌈 General Layout */
+body {
+    background: linear-gradient(135deg, #111827, #1f2937);
+    font-family: "Poppins", sans-serif;
+    color: #f3f4f6;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* ✨ Modern Form */
+  .modern-form-container {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    width: 380px;
+    margin: auto;
+  }
+  
+  .form-title {
+    font-size: 1.5rem;
+    color: #fff;
+    margin-bottom: 20px;
+    font-weight: 600;
+    text-shadow: 0 0 8px #3b82f6;
+  }
+  
+  .modern-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .modern-input {
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    outline: none;
+    background: rgba(255, 255, 255, 0.1);
+    color: #f9fafb;
+    font-size: 15px;
+    transition: all 0.3s;
+  }
+  
+  .modern-input:focus {
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 8px #60a5fa;
+  }
+  
+  /* 💡 Buttons */
+  .button-group {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 10px;
+  }
+  
+  .btn-glow {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s ease-in-out;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .btn-glow::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 8px;
+    background: linear-gradient(90deg, #3b82f6, #9333ea);
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  
+  .btn-glow:hover::after {
+    opacity: 1;
+    filter: blur(4px);
+  }
+  
+  .submit-btn {
+    background: linear-gradient(90deg, #3b82f6, #60a5fa);
+  }
+  
+  .reset-btn {
+    background: linear-gradient(90deg, #ef4444, #f87171);
+  }
+  
+  /* 💻 Modern Console */
+  .modern-console {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    padding: 20px;
+    border-radius: 16px;
+    width: 400px;
+    max-height: 280px;
+    overflow-y: auto;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  }
+  
+  .console-header {
+    color: #93c5fd;
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    text-shadow: 0 0 6px #60a5fa;
+  }
+  
+  .console-content p {
+    margin: 8px 0;
+    font-size: 15px;
+    color: #e5e7eb;
+  }
+  
+  .key {
+    color: #60a5fa;
+    font-weight: 600;
+  }
+  
+  .no-data {
+    color: #9ca3af;
+    font-style: italic;
+  }
+  
+  /* 🎨 TimeColor Section */
+  .timecolor-container {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(96, 165, 250, 0.3);
+    margin-top: 40px;
+    transition: all 0.3s;
+  }
+  
+  .timecolor-container:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 15px rgba(147, 51, 234, 0.4);
+  }
+  

@@ -1,32 +1,20 @@
+// src/components/FormContainer.jsx
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { updateField, resetForm } from "../features/formSlice";
-import FormComponent from "../components/formcomponent";
+import FormComponent from "./formcomponent";
+import DisplayComponent from "./displaycomponent";
+import "./formcontainer.css";
 
-const FormContainer = () => {
-  const dispatch = useDispatch();
-  const formData = useSelector((state) => state.form);
-
-  const handleChange = (name, value) => {
-    dispatch(updateField({ name, value }));
-  };
-
-  const handleSubmit = () => {
-    alert(`Form Submitted:\n${JSON.stringify(formData, null, 2)}`);
-  };
-
-  const handleReset = () => {
-    dispatch(resetForm());
-  };
-
+export default function FormContainer() {
   return (
-    <FormComponent
-      formData={formData}
-      onChange={handleChange}
-      onSubmit={handleSubmit}
-      onReset={handleReset}
-    />
-  );
-};
+    <div className="dashboard-container">
+      <div className="form-section">
+        <h2 className="dashboard-title">🧾 Redux Smart Form</h2>
+        <FormComponent />
+      </div>
 
-export default FormContainer;
+      <div className="console-section">
+        <DisplayComponent />
+      </div>
+    </div>
+  );
+}

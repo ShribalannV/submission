@@ -1,45 +1,57 @@
-import React, { useState } from "react";
+// src/index.js
+import React from "react";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
+import { BrowserRouter, Routes, Route, NavLink } from "react-router-dom";
+import store from "./store.js";
+
 import App from "./App";
 import FormComponent from "./components/formcomponent.jsx";
 import DisplayComponent from "./components/displaycomponent.jsx";
 import TimeColorApp from "./components/TimeColorPicker/TimeColorApp.jsx";
-import store from "./store.js";
-import "./index.css"; // ✅ for layout styling
+
+import "./index.css"; // Modern UI styles
 
 const RootComponent = () => {
-  const [submittedData, setSubmittedData] = useState(null);
-
-  const handleFormSubmit = (data) => {
-    setSubmittedData(data);
-  };
-
   return (
-    <Provider store={store}>
-      <div className="main-container">
-        <App />
-        <h1 className="main-title">Form Submission Example</h1>
+    <div className="main-container">
+      {/*  Modern Navbar */}
+      <nav className="navbar">
+        <NavLink to="/" className="nav-link">
+          🏠 Home
+        </NavLink>
+        <NavLink to="/form" className="nav-link">
+          📝 Form
+        </NavLink>
+        <NavLink to="/display" className="nav-link">
+          📊 Display
+        </NavLink>
+        <NavLink to="/timecolor" className="nav-link">
+          ⏰ TimeColor
+        </NavLink>
+      </nav>
 
-        <div className="form-display-wrapper">
-          {/* Left - Form */}
-          <div className="form-section">
-            <FormComponent onSubmit={handleFormSubmit} />
-          </div>
-
-          {/* Right - Display Console */}
-          <div className="display-section">
-            <DisplayComponent data={submittedData} />
-          </div>
-        </div>
-
-        <div className="extra-section">
-          <TimeColorApp />
-        </div>
-      </div>
-    </Provider>
+      {/* Routes (All Data Comes from Redux) */}
+      <Routes>
+        <Route path="/" element={<App />} />
+        <Route path="/form" element={<FormComponent />} />
+        <Route path="/display" element={<DisplayComponent />} />
+        <Route path="/timecolor" element={<TimeColorApp />} />
+      </Routes>
+    </div>
   );
 };
 
+
+if (window.location.pathname !== "/") {
+  window.history.replaceState(null, "", "/");
+}
+
 const root = createRoot(document.getElementById("root"));
-root.render(<RootComponent />);
+root.render(
+  <Provider store={store}>
+    <BrowserRouter>
+      <RootComponent />
+    </BrowserRouter>
+  </Provider>
+);

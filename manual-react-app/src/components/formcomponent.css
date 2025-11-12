@@ -1,80 +1,90 @@
 .modern-form {
     background: #ffffff;
-    padding: 40px 50px;
-    width: 400px;
-    margin: 40px auto;
     border-radius: 16px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .modern-form:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
-  }
-  
-  .form-title {
-    font-size: 26px;
-    margin-bottom: 25px;
-    color: #333;
-    text-align: center;
-    font-weight: 700;
-  }
-  
-  .form-group {
-    margin-bottom: 20px;
-  }
-  
-  .form-group input {
-    width: 100%;
-    padding: 12px 15px;
-    font-size: 16px;
-    border: 2px solid #ccc;
-    border-radius: 10px;
-    outline: none;
+    padding: 30px 25px;
+    max-width: 450px;
+    margin: 0 auto;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
   }
   
-  .form-group input:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+  .modern-form:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+  }
+  
+  .form-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-align: center;
+    color: #1e293b;
+    margin-bottom: 25px;
+  }
+  
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+  }
+  
+  .input-group label {
+    margin-bottom: 6px;
+    font-weight: 500;
+    color: #334155;
+  }
+  
+  .input-group input {
+    padding: 10px 15px;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+  }
+  
+  .input-group input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
   }
   
   .button-group {
     display: flex;
-    justify-content: space-between;
-    margin-top: 25px;
+    justify-content: center;
+    gap: 15px;
   }
   
-  .btn {
-    flex: 1;
-    margin: 0 5px;
-    padding: 12px;
-    font-size: 16px;
-    font-weight: 600;
+  .submit-btn,
+  .reset-btn {
+    padding: 10px 20px;
     border-radius: 10px;
-    border: none;
+    font-size: 1rem;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
+    border: none;
   }
   
   .submit-btn {
-    background-color: #007bff;
-    color: white;
+    background-color: #3b82f6;
+    color: #fff;
   }
   
   .submit-btn:hover {
-    background-color: #0056b3;
-    transform: translateY(-2px);
+    background-color: #2563eb;
   }
   
   .reset-btn {
-    background-color: #dc3545;
-    color: white;
+    background-color: #f87171;
+    color: #fff;
   }
   
   .reset-btn:hover {
-    background-color: #a71d2a;
-    transform: translateY(-2px);
+    background-color: #dc2626;
+  }
+  
+  .popup-data {
+    margin-top: 10px;
+    text-align: left;
+    font-weight: 500;
+    color: #1e293b;
   }
   

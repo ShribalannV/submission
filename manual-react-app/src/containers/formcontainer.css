@@ -1,0 +1,41 @@
+/* Modern dashboard split layout */
+.dashboard-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 2rem;
+    padding: 2rem 4rem;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #111827, #1e293b);
+    font-family: "Inter", sans-serif;
+  }
+  
+  .form-section {
+    flex: 1;
+    background: rgba(31, 41, 55, 0.9);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    color: #f9fafb;
+    transition: transform 0.3s ease;
+  }
+  
+  .form-section:hover {
+    transform: translateY(-3px);
+  }
+  
+  .dashboard-title {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #60a5fa;
+    font-weight: 600;
+    letter-spacing: 1px;
+  }
+  
+  .console-section {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+  }
+  
