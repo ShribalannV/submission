@@ -6,6 +6,10 @@ import FormComponent from "./components/formcomponent.jsx";
 import DisplayComponent from "./components/displaycomponent.jsx";
 import TimeColorApp from "./components/TimeColorPicker/TimeColorApp.jsx";
 import PageNotFound from "./components/pagenotfound.jsx";
+
+import Dashboard from "./components/Dashboard.jsx"; // ✅ Added Dashboard
+import PopupExamples from "./components/popup/popupexamples.jsx";
+
 import { Provider } from "react-redux";
 import store from "./store.js";
 
@@ -14,22 +18,28 @@ import "./index.css";
 const RootComponent = () => {
   return (
     <div className="main-container">
-      {/* Navbar */}
+      {/* ✅ Modern Navbar */}
       <nav className="navbar">
-        <NavLink to="/" className="nav-link">🏠 Home</NavLink>
+        <NavLink to="/dashboard" className="nav-link">🧭 Dashboard</NavLink>
         <NavLink to="/form" className="nav-link">📝 Form</NavLink>
         <NavLink to="/display" className="nav-link">📊 Display</NavLink>
+        <NavLink to="/fetchdata" className="nav-link">🌐 Fetch Data</NavLink>
         <NavLink to="/timecolor" className="nav-link">⏰ TimeColor</NavLink>
+        <NavLink to="/popup" className="nav-link">💬 Popup Examples</NavLink>
+
       </nav>
 
-      {/* Routes */}
+      {/* ✅ Routes */}
       <Routes>
-        <Route path="/" element={<App />} />
+        <Route path="/" element={<Dashboard />} /> {/* Default Home */}
+        <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/form" element={<FormComponent />} />
         <Route path="/display" element={<DisplayComponent />} />
+        
         <Route path="/timecolor" element={<TimeColorApp />} />
+        <Route path="/popup" element={<PopupExamples />} />
 
-        {/* Catch-all route must be LAST */}
+        {/* Catch-all (must be last) */}
         <Route path="*" element={<PageNotFound />} />
       </Routes>
     </div>
