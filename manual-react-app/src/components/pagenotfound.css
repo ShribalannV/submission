@@ -1,0 +1,39 @@
+.pnf-container {
+    height: 70vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-family: "Inter", sans-serif;
+    color: #1e293b;
+  }
+  
+  .pnf-container h1 {
+    font-size: 6rem;
+    margin-bottom: 1rem;
+  }
+  
+  .pnf-container p {
+    font-size: 1.2rem;
+    margin: 5px 0;
+    color: #334155;
+  }
+  
+  .pnf-home-btn {
+    margin-top: 20px;
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .pnf-home-btn:hover {
+    background-color: #2563eb;
+    transform: translateY(-2px);
+  }
+  
