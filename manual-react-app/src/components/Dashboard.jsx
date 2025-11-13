@@ -1,9 +1,37 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Dashboard.css";
 
 const Dashboard = () => {
   const navigate = useNavigate();
+
+  // ✅ Token validation
+  useEffect(() => {
+    const validateToken = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        navigate("/login"); // redirect if no token
+        return;
+      }
+
+      try {
+        const res = await fetch("http://localhost:5279/api/Auth/validate", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        const data = await res.json();
+
+        if (!res.ok || !data.valid) {
+          navigate("/login"); // redirect if invalid token
+        }
+      } catch (error) {
+        console.error("Token validation error:", error);
+        navigate("/login"); // redirect if server error
+      }
+    };
+
+    validateToken();
+  }, [navigate]);
 
   const cards = [
     {

@@ -6,9 +6,9 @@ import FormComponent from "./components/formcomponent.jsx";
 import DisplayComponent from "./components/displaycomponent.jsx";
 import TimeColorApp from "./components/TimeColorPicker/TimeColorApp.jsx";
 import PageNotFound from "./components/pagenotfound.jsx";
-
-import Dashboard from "./components/Dashboard.jsx"; // ✅ Added Dashboard
+import Dashboard from "./components/Dashboard.jsx";
 import PopupExamples from "./components/popup/popupexamples.jsx";
+import Login from "./components/Login.jsx"; // ✅ Import your Login component
 
 import { Provider } from "react-redux";
 import store from "./store.js";
@@ -26,7 +26,7 @@ const RootComponent = () => {
         <NavLink to="/fetchdata" className="nav-link">🌐 Fetch Data</NavLink>
         <NavLink to="/timecolor" className="nav-link">⏰ TimeColor</NavLink>
         <NavLink to="/popup" className="nav-link">💬 Popup Examples</NavLink>
-
+        <NavLink to="/login" className="nav-link">🔑 Login</NavLink>
       </nav>
 
       {/* ✅ Routes */}
@@ -35,10 +35,11 @@ const RootComponent = () => {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/form" element={<FormComponent />} />
         <Route path="/display" element={<DisplayComponent />} />
-        
+        <Route path="/fetchdata" element={<DisplayComponent />} />
         <Route path="/timecolor" element={<TimeColorApp />} />
         <Route path="/popup" element={<PopupExamples />} />
-
+        <Route path="/login" element={<Login />} /> {/* ✅ Login route */}
+        
         {/* Catch-all (must be last) */}
         <Route path="*" element={<PageNotFound />} />
       </Routes>
