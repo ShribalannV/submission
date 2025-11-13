@@ -7,10 +7,25 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
+// ---------------------------------------------
+// Add services to the container
+// ---------------------------------------------
 builder.Services.AddControllers();
 
+// ✅ Enable CORS for React frontend
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp", policy =>
+    {
+        policy.WithOrigins("http://localhost:3000") // React development server
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
 
+// ---------------------------------------------
+// Swagger Configuration
+// ---------------------------------------------
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -20,7 +35,7 @@ builder.Services.AddSwaggerGen(c =>
         Version = "v1"
     });
 
-    
+    // JWT support in Swagger
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = "JWT Authorization header using the Bearer scheme. Example: 'Bearer {token}'",
@@ -45,11 +60,15 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
-
+// ---------------------------------------------
+// Database Configuration
+// ---------------------------------------------
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-
+// ---------------------------------------------
+// JWT Authentication Setup
+// ---------------------------------------------
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -66,9 +85,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+// ---------------------------------------------
+// Build the app
+// ---------------------------------------------
 var app = builder.Build();
 
-
+// ---------------------------------------------
+// Middleware pipeline
+// ---------------------------------------------
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
@@ -76,6 +100,8 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix = string.Empty;
 });
 
+// ✅ Use CORS before authentication
+app.UseCors("AllowReactApp");
 
 app.UseAuthentication();
 app.UseAuthorization();
