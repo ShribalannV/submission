@@ -1,51 +1,53 @@
-import React from 'react';
-import { Routes, Route, Link } from 'react-router-dom';
-import LandingPage from './pages/LandingPage';
-import LoginPage from './pages/LoginPage';
-import AccountsPage from './pages/AccountsPage';
-import TransactionsPage from './pages/TransactionsPage';
-import { AuthProvider, useAuth } from './services/auth';
+import React from "react";
+import { Routes, Route } from "react-router-dom";
 
-function Header() {
-  const { user, logout } = useAuth();
+import LandingPage from "./pages/Landingpage";
+import LoginPage from "./pages/Loginpage";
+import AboutUs from "./pages/Aboutus";
+import PlansPage from "./pages/planspage";
+import AccountsPage from "./pages/Accountspage";
+import TransactionsPage from "./pages/Transactionspage";
+import ManageUsersPage from "./pages/Manageuserspage";
+import ManageBanksPage from "./pages/ManageBankspage";
+import ManageBranchesPage from "./pages/ManageBranchesPage";
+
+import MainLayout from "./layouts/Mainlayout";
+import AdminLayout from "./layouts/Adminlayout";
+
+import ProtectedRoute from "./components/ProtectedRoute";
+import AdminRoute from "./components/AdminRoute";
+
+function App() {
   return (
-    <header className="bg-white shadow-sm">
-      <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-        <Link to="/" className="font-bold text-lg">Banking Aggregator</Link>
-        <nav className="flex items-center gap-4">
-          <Link to="/" className="text-sm">Home</Link>
-          {user ? (
-            <>
-              <Link to="/accounts" className="text-sm">Accounts</Link>
-              <Link to="/transactions" className="text-sm">Transactions</Link>
-              <button onClick={logout} className="text-sm">Logout</button>
-            </>
-          ) : (
-            <Link to="/login" className="text-sm">Login</Link>
-          )}
-        </nav>
-      </div>
-    </header>
+    <Routes>
+
+      {/* Public Website */}
+      <Route element={<MainLayout />}>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/about" element={<AboutUs />} />
+        <Route path="/plans" element={<PlansPage />} />
+        <Route path="/login" element={<LoginPage />} />
+      </Route>
+
+      {/* User Pages (Protected) */}
+      <Route element={<ProtectedRoute />}>
+        <Route element={<MainLayout />}>
+          <Route path="/accounts" element={<AccountsPage />} />
+          <Route path="/transactions" element={<TransactionsPage />} />
+        </Route>
+      </Route>
+
+      {/* Admin Pages (Protected + Admin only) */}
+      <Route element={<AdminRoute />}>
+        <Route element={<AdminLayout />}>
+          <Route path="/admin/users" element={<ManageUsersPage />} />
+          <Route path="/admin/banks" element={<ManageBanksPage />} />
+          <Route path="/admin/banks/:bankId" element={<ManageBranchesPage />} />
+        </Route>
+      </Route>
+
+    </Routes>
   );
 }
 
-export default function App() {
-  return (
-    <AuthProvider>
-      <div className="min-h-screen flex flex-col">
-        <Header />
-        <main className="container mx-auto px-4 py-6 flex-1">
-          <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/accounts" element={<AccountsPage />} />
-            <Route path="/transactions" element={<TransactionsPage />} />
-          </Routes>
-        </main>
-        <footer className="bg-white border-t">
-          <div className="container mx-auto px-4 py-4 text-sm text-center">© 2025 Banking Aggregator</div>
-        </footer>
-      </div>
-    </AuthProvider>
-  );
-}
+export default App;
