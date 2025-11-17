@@ -18,9 +18,16 @@ module.exports = {
     open: true,
     hot: true,
     static: path.resolve(__dirname, 'public'),
-    proxy: {
-      '/api': 'http://localhost:5000' // forward API calls to backend
-    }
+
+    // ✅ FIXED PROXY
+    proxy: [
+      {
+        context: ['/api'],
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+        secure: false,
+      }
+    ]
   },
   module: {
     rules: [
