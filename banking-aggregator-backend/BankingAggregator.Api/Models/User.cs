@@ -1,17 +1,12 @@
-﻿namespace BankingAggregator.Api;
-
-
-public class User
+﻿namespace BankingAggregator.Api.Models
 {
-    public int Id { get; set; }
+    public class User
+    {
+        public int Id { get; set; }
+        public string Email { get; set; } = "";
+        public string FullName { get; set; } = "";
+        public string Role { get; set; } = "";
 
-    public string Username { get; set; }
-    public string PasswordHash { get; set; }
-
-    public string Email { get; set; }   // ✅ Missing field added
-
-    public int RoleId { get; set; }
-    public Role Role { get; set; }
-
-    public List<RefreshToken> RefreshTokens { get; set; }
+        public ICollection<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
+    }
 }

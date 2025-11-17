@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using BankingAggregator.Api.Models;
 using BankingAggregator.Api.Data;
-
 using Microsoft.EntityFrameworkCore;
 
 namespace BankingAggregator.Api.Controllers

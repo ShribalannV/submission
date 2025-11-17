@@ -1,19 +1,18 @@
-﻿namespace BankingAggregator.Api;
+﻿using System;
 
-public class Transaction
+namespace BankingAggregator.Api.Models
 {
-    public int Id { get; set; }
+    public class Transaction
+    {
+        public int Id { get; set; }
 
-    public int AccountId { get; set; }
-    public Account Account { get; set; }
+        public Guid AccountId { get; set; }     // the account performing the transaction
+        public Account Account { get; set; }
 
-    public string Type { get; set; }  // credit / debit
-    public decimal Amount { get; set; }
-
-    public string Description { get; set; } // ✅ Added
-
-    public int? CounterpartyAccountId { get; set; } // nullable for safety
-    public Account CounterpartyAccount { get; set; } // FK reference
-
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow; // ✅ Added
+        public string Type { get; set; } = "";  // deposit, withdraw, transfer-in, transfer-out
+        public decimal Amount { get; set; }
+        public string? Description { get; set; }
+        public Guid? CounterpartyAccountId { get; set; } // for transfers
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    }
 }

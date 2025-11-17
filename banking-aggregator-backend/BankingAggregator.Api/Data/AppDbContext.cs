@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-
+using BankingAggregator.Api.Models;
 namespace BankingAggregator.Api.Data
 {
     public class AppDbContext : DbContext
