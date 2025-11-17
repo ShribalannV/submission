@@ -1,13 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿namespace BankingAggregator.Api;
+public class RefreshToken
+{
+    public int Id { get; set; }
 
-namespace BankingAggregator.Api.Models 
-{ 
-    public class RefreshToken { 
-        [Key] public Guid Id { get; set; } = Guid.NewGuid(); 
-        public Guid UserId { get; set; } 
-        public string TokenHash { get; set; } = ""; 
-        public DateTime ExpiresAt { get; set; } 
-        public bool Revoked { get; set; } = false; 
-    } 
+    public string Token { get; set; }
+    public DateTime ExpiresAt { get; set; }
+    public bool IsRevoked { get; set; } = false;
+
+    public int UserId { get; set; }
+    public User User { get; set; }
 }
-

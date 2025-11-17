@@ -1,28 +1,19 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿namespace BankingAggregator.Api;
 
-namespace BankingAggregator.Api.Models
-
+public class Transaction
 {
+    public int Id { get; set; }
 
-    public class Transaction
+    public int AccountId { get; set; }
+    public Account Account { get; set; }
 
-    {
+    public string Type { get; set; }  // credit / debit
+    public decimal Amount { get; set; }
 
-        [Key] public Guid Id { get; set; } = Guid.NewGuid();
+    public string Description { get; set; } // ✅ Added
 
-        public Guid AccountId { get; set; }
+    public int? CounterpartyAccountId { get; set; } // nullable for safety
+    public Account CounterpartyAccount { get; set; } // FK reference
 
-        public string Type { get; set; } = "";
-
-        public decimal Amount { get; set; }
-
-        public Guid? CounterpartyAccountId { get; set; }
-
-        public string Description { get; set; } = "";
-
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-
-    }
-
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow; // ✅ Added
 }
-

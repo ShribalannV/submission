@@ -1,9 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿namespace BankingAggregator.Api;
+public class Bank
+{
+    public int Id { get; set; }
+    public string BankName { get; set; }
 
-namespace BankingAggregator.Api.Models { 
-    public class Bank { 
-        [Key] public Guid Id { get; set; } = Guid.NewGuid(); 
-        public string Name { get; set; } = ""; 
-        public string Code { get; set; } = "";
-    } 
+    public List<Branch> Branches { get; set; }
 }

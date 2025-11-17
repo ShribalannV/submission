@@ -1,32 +1,18 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿namespace BankingAggregator.Api;
 
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace BankingAggregator.Api.Models
-
+public class Account
 {
+    public int Id { get; set; }
 
-    public class Account
+    public string AccountNumber { get; set; }
+    public string AccountType { get; set; }
 
-    {
+    public decimal Balance { get; set; }
 
-        [Key] public Guid Id { get; set; } = Guid.NewGuid();
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow; // ✅ Added
 
-        public Guid UserId { get; set; }
+    public bool IsClosed { get; set; } = false; // ✅ Added
 
-        public Guid BankId { get; set; }
-
-        public Guid BranchId { get; set; }
-
-        public string AccountNumber { get; set; } = "";
-
-        [Column(TypeName = "decimal(18,2)")] public decimal Balance { get; set; } = 0m;
-
-        public bool IsClosed { get; set; } = false;
-
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-
-    }
-
+    public int UserId { get; set; }
+    public User User { get; set; }
 }
-

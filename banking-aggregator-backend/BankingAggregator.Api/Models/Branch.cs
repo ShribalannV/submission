@@ -1,17 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
-
+﻿namespace BankingAggregator.Api;
 public class Branch
 {
-    [Key]
-    public Guid Id { get; set; }
+    public int Id { get; set; }
+    public string BranchName { get; set; }
+    public string IFSC { get; set; }
 
-    public Guid BankId { get; set; }
-    public string Name { get; set; } = "";
-    public string Code { get; set; } = "";
-    public string Address { get; set; } = "";
-
-    public Branch()
-    {
-        Id = Guid.NewGuid();
-    }
+    public int BankId { get; set; }
+    public Bank Bank { get; set; }
 }
