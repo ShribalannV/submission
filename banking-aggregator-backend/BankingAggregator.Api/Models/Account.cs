@@ -11,6 +11,9 @@ namespace BankingAggregator.Api.Models
         public bool IsClosed { get; set; } = false;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
+        public Guid UserId { get; set; }  // Owner
+        public User ?User { get; set; }
+
         public ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
     }
 }
