@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using BankingAggregator.Api.Models;
-using BankingAggregator.Api.Data;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using BankingAggregator.Api.Data;
+using BankingAggregator.Api.Models;
+using System.Security.Claims;
 
 namespace BankingAggregator.Api.Controllers
 {
     [ApiController]
+    [Authorize]   // user must be logged in
     [Route("api/[controller]")]
     public class AccountsController : ControllerBase
     {
@@ -16,152 +19,85 @@ namespace BankingAggregator.Api.Controllers
             _db = db;
         }
 
+        // ================================================================
+        // 1️⃣ LIST ACCOUNTS — USER CAN ONLY SEE THEIR OWN ACCOUNTS
+        // ================================================================
         [HttpGet]
-        public async Task<IActionResult> List([FromQuery] string? search, int page = 1, int pageSize = 10)
+        public async Task<IActionResult> GetMyAccounts()
         {
-            var query = _db.Accounts.AsQueryable();
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            if (!string.IsNullOrWhiteSpace(search))
-                query = query.Where(a => a.AccountNumber.Contains(search));
+            if (userId == null)
+                return Unauthorized(new { message = "User not authenticated" });
 
-            var total = await query.CountAsync();
-
-            var items = await query
-                .OrderBy(a => a.CreatedAt)
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
+            var accounts = await _db.Accounts
+                .Where(a => a.UserId.ToString() == userId)
                 .Select(a => new
                 {
                     a.Id,
                     a.AccountNumber,
                     a.Balance,
                     a.IsClosed,
-                    a.CreatedAt,
-                    bankName = "",
-                    branchName = ""
+                    a.CreatedAt
                 })
                 .ToListAsync();
 
-            return Ok(new { items, total });
+            return Ok(accounts);
         }
 
-        [HttpPost("{id}/deposit")]
-        public async Task<IActionResult> Deposit(Guid id, [FromBody] AmountDto dto)
+        // ================================================================
+        // 2️⃣ CREATE NEW ACCOUNT — ONLY ADMIN
+        // ================================================================
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> CreateAccount([FromBody] CreateAccountRequest req)
         {
-            if (dto.Amount <= 0) return BadRequest("invalid amount");
-
-            var acc = await _db.Accounts.FindAsync(id);
-            if (acc == null) return NotFound();
-
-            acc.Balance += dto.Amount;
-
-            _db.Transactions.Add(new Transaction
+            var newAccount = new Account
             {
-                AccountId = acc.Id,
-                Type = "deposit",
-                Amount = dto.Amount,
-                Description = dto.Description
-            });
+                Id = Guid.NewGuid(),
+                AccountNumber = req.AccountNumber,
+                Balance = req.InitialBalance,
+                UserId = req.UserId,
+                CreatedAt = DateTime.UtcNow
+            };
 
+            _db.Accounts.Add(newAccount);
             await _db.SaveChangesAsync();
-            return NoContent();
+
+            return Ok(new
+            {
+                message = "Account created successfully",
+                account = newAccount
+            });
         }
 
-        [HttpPost("{id}/withdraw")]
-        public async Task<IActionResult> Withdraw(Guid id, [FromBody] AmountDto dto)
+        // ================================================================
+        // 3️⃣ CLOSE ACCOUNT — ONLY ADMIN
+        // ================================================================
+        [HttpPost("{id}/close")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> CloseAccount(Guid id)
         {
-            if (dto.Amount <= 0) return BadRequest("invalid amount");
+            var account = await _db.Accounts.FindAsync(id);
 
-            var acc = await _db.Accounts.FindAsync(id);
-            if (acc == null) return NotFound();
+            if (account == null)
+                return NotFound(new { message = "Account not found" });
 
-            if (acc.Balance < dto.Amount)
-                return BadRequest("insufficient funds");
+            if (account.IsClosed)
+                return BadRequest(new { message = "Account already closed" });
 
-            acc.Balance -= dto.Amount;
-
-            _db.Transactions.Add(new Transaction
-            {
-                AccountId = acc.Id,
-                Type = "withdraw",
-                Amount = dto.Amount,
-                Description = dto.Description
-            });
-
-            await _db.SaveChangesAsync();
-            return NoContent();
-        }
-
-        [HttpPost("{id}/transfer")]
-        public async Task<IActionResult> Transfer(Guid id, [FromBody] TransferDto dto)
-        {
-            if (dto.Amount <= 0 || dto.ToAccountId == Guid.Empty)
-                return BadRequest("invalid");
-
-            if (dto.ToAccountId == id)
-                return BadRequest("cannot transfer to same account");
-
-            using var tx = await _db.Database.BeginTransactionAsync();
-
-            var from = await _db.Accounts.FindAsync(id);
-            var to = await _db.Accounts.FindAsync(dto.ToAccountId);
-
-            if (from == null || to == null)
-                return NotFound();
-
-            if (from.Balance < dto.Amount)
-                return BadRequest("insufficient funds");
-
-            from.Balance -= dto.Amount;
-            to.Balance += dto.Amount;
-
-            _db.Transactions.Add(new Transaction
-            {
-                AccountId = from.Id,
-                Type = "transfer-out",
-                Amount = dto.Amount,
-                CounterpartyAccountId = to.Id,
-                Description = dto.Description
-            });
-
-            _db.Transactions.Add(new Transaction
-            {
-                AccountId = to.Id,
-                Type = "transfer-in",
-                Amount = dto.Amount,
-                CounterpartyAccountId = from.Id,
-                Description = dto.Description
-            });
-
-            await _db.SaveChangesAsync();
-            await tx.CommitAsync();
-
-            return NoContent();
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Close(Guid id)
-        {
-            var acc = await _db.Accounts.FindAsync(id);
-            if (acc == null) return NotFound();
-
-            acc.IsClosed = true;
+            account.IsClosed = true;
             await _db.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(new { message = "Account closed successfully" });
         }
     }
 
-    public class AmountDto
+    // DTO for account creation
+    public class CreateAccountRequest
     {
-        public decimal Amount { get; set; }
-        public string? Description { get; set; }
-    }
-
-    public class TransferDto
-    {
-        public Guid ToAccountId { get; set; }
-        public decimal Amount { get; set; }
-        public string? Description { get; set; }
+        public string AccountNumber { get; set; } = "";
+        public decimal InitialBalance { get; set; }
+        public Guid UserId { get; set; }
     }
 }

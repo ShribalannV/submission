@@ -1,7 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using BankingAggregator.Api.Data;
-using BankingAggregator.Api.Models; // Ensure your models are inside this namespace
+﻿using BankingAggregator.Api.Data;
+using BankingAggregator.Api.Models;
+using BankingAggregator.Api.Services;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
+using Microsoft.IdentityModel.JsonWebTokens;  // ADD THIS
+
+
 
 namespace BankingAggregator.Api.Controllers
 {
@@ -10,29 +16,38 @@ namespace BankingAggregator.Api.Controllers
     public class AuthController : ControllerBase
     {
         private readonly AppDbContext _db;
+        private readonly JwtService _jwt;
 
-        public AuthController(AppDbContext db)
+        public AuthController(AppDbContext db, JwtService jwt)
         {
             _db = db;
+            _jwt = jwt;
         }
 
+        // ========================= LOGIN ===============================
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest req)
         {
             var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == req.Email);
 
-            if (user == null) return Unauthorized(new { message = "Invalid credentials" });
+            if (user == null)
+                return Unauthorized(new { message = "Invalid credentials" });
 
-            // demo password check: accept password "password"
-            if (req.Password != "password") return Unauthorized(new { message = "Invalid credentials" });
+            // PASSWORD VALIDATION (plain text)
+            if (req.Password != user.Password)
+                return Unauthorized(new { message = "Invalid credentials" });
 
-            var accessToken = "demo-access-token";
-            var refreshToken = Guid.NewGuid().ToString();
+            // Generate JWT access token
+            var accessToken = _jwt.GenerateAccessToken(user);
 
+            // Generate secure refresh token
+            var refreshToken = _jwt.GenerateRefreshToken();
+
+            // Save refresh token in database
             _db.RefreshTokens.Add(new RefreshToken
             {
                 UserId = user.Id,
-                Token = refreshToken,        // Ensure property name matches your RefreshToken model
+                Token = refreshToken,
                 ExpiresAt = DateTime.UtcNow.AddDays(7),
                 IsRevoked = false
             });
@@ -53,18 +68,50 @@ namespace BankingAggregator.Api.Controllers
             });
         }
 
+        // ========================= REFRESH ===============================
         [HttpPost("refresh")]
         public async Task<IActionResult> Refresh([FromBody] RefreshRequest req)
         {
-            var rt = await _db.RefreshTokens.FirstOrDefaultAsync(r => r.Token == req.RefreshToken && !r.IsRevoked);
+            var rt = await _db.RefreshTokens
+                .FirstOrDefaultAsync(r => r.Token == req.RefreshToken && !r.IsRevoked);
 
-            if (rt == null || rt.ExpiresAt < DateTime.UtcNow) return Unauthorized();
+            if (rt == null || rt.ExpiresAt < DateTime.UtcNow)
+                return Unauthorized(new { message = "Invalid or expired refresh token" });
 
-            var newAccess = "demo-access-token";
+            var user = await _db.Users.FindAsync(rt.UserId);
+            if (user == null)
+                return Unauthorized();
 
-            return Ok(new { accessToken = newAccess });
+            // Generate NEW access token
+            var newAccessToken = _jwt.GenerateAccessToken(user);
+
+            return Ok(new { accessToken = newAccessToken });
         }
 
+        // 👉 ADD THE VERIFY ENDPOINT RIGHT here (above login or below login, your choice):
+
+        [Authorize]
+        [HttpGet("verify")]
+        public IActionResult Verify()
+        {
+            if (User.Identity!.IsAuthenticated)
+            {
+                return Ok(new
+                {
+                    message = "Token is valid",
+                    user = new
+                    {
+                        Id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value,
+                        Email = User.FindFirst(JwtRegisteredClaimNames.Email)?.Value,
+                        Role = User.FindFirst("role")?.Value
+                    }
+                });
+            }
+
+            return Unauthorized(new { message = "Invalid or expired token" });
+        }
+
+        // ========================= LOGOUT ===============================
         [HttpPost("logout")]
         public async Task<IActionResult> Logout([FromBody] LogoutRequest req)
         {
@@ -80,6 +127,7 @@ namespace BankingAggregator.Api.Controllers
         }
     }
 
+    // ========================= DTO CLASSES ===============================
     public class LoginRequest
     {
         public string Email { get; set; } = "";

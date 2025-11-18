@@ -8,6 +8,6 @@
         public bool IsRevoked { get; set; } = false;
 
         public int UserId { get; set; }
-        public User User { get; set; }
+        public User ?User { get; set; }
     }
 }
