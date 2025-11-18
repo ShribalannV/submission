@@ -93,7 +93,8 @@ export default function AccountsPage() {
   async function handleClose(account) {
     if (!confirm('Close this account?')) return;
     try {
-      await api.delete(`/accounts/${account.id}`);
+      var id = account?.id;
+      await api.post(`/Accounts/${id}/close`);
       alert('Account closed');
       // refresh grid by triggering a dummy state change — DataGrid will call fetch again via props (it calls fetch when search/page changes),
       // to keep it simple just reload the page:

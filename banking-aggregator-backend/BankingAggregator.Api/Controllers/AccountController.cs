@@ -31,7 +31,7 @@ namespace BankingAggregator.Api.Controllers
                 return Unauthorized(new { message = "User not authenticated" });
 
             var accounts = await _db.Accounts
-                .Where(a => a.UserId.ToString() == userId)
+                .Where(a => !a.IsClosed)
                 .Select(a => new
                 {
                     a.Id,

@@ -14,8 +14,13 @@ export default function DataGrid({ fetchData, columns }) {
     fetchData({ search, page, pageSize, sort }).then(res => {
       if (!mounted) return;
       // API returns { items, total } or { items: ..., total: ... }
-      const items = res.items ?? res;
-      const total = res.total ?? (Array.isArray(res) ? res.length : 0);
+      const rawItems = res.items ?? res;
+      const items = Array.isArray(rawItems)
+      ? rawItems.filter(x => x.isClosed === false)
+      : [];
+ 
+      // total should be the count of filtered items
+      const total = items.length;
       setData({ items, total, loading: false });
     }).catch(()=> setData(d => ({ ...d, loading:false })));
     return () => { mounted = false; };
