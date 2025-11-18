@@ -19,11 +19,11 @@ module.exports = {
     hot: true,
     static: path.resolve(__dirname, 'public'),
 
-    // ✅ FIXED PROXY
+    // ✅ UPDATED PROXY (backend is on http://localhost:5099)
     proxy: [
       {
         context: ['/api'],
-        target: 'http://localhost:5000',
+        target: 'http://localhost:5099',   // <-- updated from 5000 → 5099
         changeOrigin: true,
         secure: false,
       }
