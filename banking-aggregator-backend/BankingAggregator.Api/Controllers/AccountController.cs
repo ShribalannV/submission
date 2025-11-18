@@ -49,7 +49,7 @@ namespace BankingAggregator.Api.Controllers
         // 2️⃣ CREATE NEW ACCOUNT — ONLY ADMIN
         // ================================================================
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> CreateAccount([FromBody] CreateAccountRequest req)
         {
             var newAccount = new Account
@@ -75,7 +75,7 @@ namespace BankingAggregator.Api.Controllers
         // 3️⃣ CLOSE ACCOUNT — ONLY ADMIN
         // ================================================================
         [HttpPost("{id}/close")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> CloseAccount(Guid id)
         {
             var account = await _db.Accounts.FindAsync(id);
