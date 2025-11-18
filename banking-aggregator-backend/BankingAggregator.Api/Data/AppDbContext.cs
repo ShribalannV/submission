@@ -36,10 +36,14 @@ namespace BankingAggregator.Api.Data
                 .WithOne(t => t.Account)
                 .HasForeignKey(t => t.AccountId);
 
-            modelBuilder.Entity<User>()
-                .HasMany(u => u.RefreshTokens)
-                .WithOne(rt => rt.User)
-                .HasForeignKey(rt => rt.UserId);
+            modelBuilder.Entity<User>(user =>
+            {
+                user.HasMany(u => u.RefreshTokens)
+                    .WithOne(rt => rt.User)
+                    .HasForeignKey(rt => rt.UserId);
+            });
+
+
 
             // Add other relationships as needed
         }

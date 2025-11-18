@@ -98,6 +98,6 @@ namespace BankingAggregator.Api.Controllers
     {
         public string AccountNumber { get; set; } = "";
         public decimal InitialBalance { get; set; }
-        public Guid UserId { get; set; }
+        public int UserId { get; set; }
     }
 }
