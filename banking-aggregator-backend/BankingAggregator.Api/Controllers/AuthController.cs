@@ -4,10 +4,8 @@ using BankingAggregator.Api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.JsonWebTokens;
 using System.Security.Claims;
-using Microsoft.IdentityModel.JsonWebTokens;  // ADD THIS
-
-
 
 namespace BankingAggregator.Api.Controllers
 {
@@ -24,26 +22,21 @@ namespace BankingAggregator.Api.Controllers
             _jwt = jwt;
         }
 
-        // ========================= LOGIN ===============================
+        // ================= LOGIN =================
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest req)
         {
-            var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == req.Email);
+            var user = await _db.Users
+                .FirstOrDefaultAsync(u => u.Email == req.Email);
 
-            if (user == null)
+            if (user == null || user.Password != req.Password)
                 return Unauthorized(new { message = "Invalid credentials" });
 
-            // PASSWORD VALIDATION (plain text)
-            if (req.Password != user.Password)
-                return Unauthorized(new { message = "Invalid credentials" });
-
-            // Generate JWT access token
+            // Generate tokens
             var accessToken = _jwt.GenerateAccessToken(user);
-
-            // Generate secure refresh token
             var refreshToken = _jwt.GenerateRefreshToken();
 
-            // Save refresh token in database
+            // Save refresh token
             _db.RefreshTokens.Add(new RefreshToken
             {
                 UserId = user.Id,
@@ -68,7 +61,7 @@ namespace BankingAggregator.Api.Controllers
             });
         }
 
-        // ========================= REFRESH ===============================
+        // ================= REFRESH =================
         [HttpPost("refresh")]
         public async Task<IActionResult> Refresh([FromBody] RefreshRequest req)
         {
@@ -82,40 +75,34 @@ namespace BankingAggregator.Api.Controllers
             if (user == null)
                 return Unauthorized();
 
-            // Generate NEW access token
             var newAccessToken = _jwt.GenerateAccessToken(user);
 
             return Ok(new { accessToken = newAccessToken });
         }
 
-        // 👉 ADD THE VERIFY ENDPOINT RIGHT here (above login or below login, your choice):
-
+        // ================= VERIFY (Protected) =================
         [Authorize]
         [HttpGet("verify")]
         public IActionResult Verify()
         {
-            if (User.Identity!.IsAuthenticated)
+            return Ok(new
             {
-                return Ok(new
+                message = "Token is valid",
+                user = new
                 {
-                    message = "Token is valid",
-                    user = new
-                    {
-                        Id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value,
-                        Email = User.FindFirst(JwtRegisteredClaimNames.Email)?.Value,
-                        Role = User.FindFirst("role")?.Value
-                    }
-                });
-            }
-
-            return Unauthorized(new { message = "Invalid or expired token" });
+                    Id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value,
+                    Email = User.FindFirst(JwtRegisteredClaimNames.Email)?.Value,
+                    Role = User.FindFirst("role")?.Value
+                }
+            });
         }
 
-        // ========================= LOGOUT ===============================
+        // ================= LOGOUT =================
         [HttpPost("logout")]
         public async Task<IActionResult> Logout([FromBody] LogoutRequest req)
         {
-            var rt = await _db.RefreshTokens.FirstOrDefaultAsync(r => r.Token == req.RefreshToken);
+            var rt = await _db.RefreshTokens
+                .FirstOrDefaultAsync(r => r.Token == req.RefreshToken);
 
             if (rt != null)
             {
@@ -127,7 +114,7 @@ namespace BankingAggregator.Api.Controllers
         }
     }
 
-    // ========================= DTO CLASSES ===============================
+    // ================= DTOs =================
     public class LoginRequest
     {
         public string Email { get; set; } = "";

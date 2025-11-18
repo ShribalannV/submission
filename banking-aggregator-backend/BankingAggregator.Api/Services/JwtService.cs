@@ -1,5 +1,4 @@
 ﻿using BankingAggregator.Api.Models;
-
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -17,9 +16,13 @@ namespace BankingAggregator.Api.Services
             _config = config;
         }
 
+        // ================= ACCESS TOKEN =================
         public string GenerateAccessToken(User user)
         {
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["JwtSettings:Key"]));
+            var key = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(_config["JwtSettings:Key"])
+            );
+
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var claims = new[]
@@ -39,13 +42,11 @@ namespace BankingAggregator.Api.Services
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
-        // ---------------------------------------------------
-        // 2️⃣ Generate REFRESH TOKEN (Random 64-byte string)
-        // ---------------------------------------------------
+
+        // ================= REFRESH TOKEN =================
         public string GenerateRefreshToken()
         {
-            var bytes = RandomNumberGenerator.GetBytes(64);
-            return Convert.ToBase64String(bytes);
+            return Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
         }
     }
 }

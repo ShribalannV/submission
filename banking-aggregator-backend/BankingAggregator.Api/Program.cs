@@ -8,19 +8,24 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Controllers
 builder.Services.AddControllers();
 
-// DB
+// Database
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// JWT Service
 builder.Services.AddScoped<JwtService>();
 
+// JWT Settings
 var jwtKey = builder.Configuration["JwtSettings:Key"]
     ?? throw new Exception("JWT Key missing in configuration.");
 
 var jwtIssuer = builder.Configuration["JwtSettings:Issuer"];
 var jwtAudience = builder.Configuration["JwtSettings:Audience"];
 
+// Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -30,23 +35,24 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = false,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-
             IssuerSigningKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(jwtKey))
         };
     });
 
-// Swagger + JWT Support
+// Swagger (with JWT support)
 builder.Services.AddSwaggerGen(c =>
 {
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "BankingAggregator API", Version = "v1" });
+
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         In = ParameterLocation.Header,
-        Description = "Enter JWT token",
+        Description = "Enter JWT token like: Bearer {token}",
         Name = "Authorization",
         Type = SecuritySchemeType.Http,
-        BearerFormat = "JWT",
-        Scheme = "bearer"
+        Scheme = "bearer",
+        BearerFormat = "JWT"
     });
 
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -67,20 +73,29 @@ builder.Services.AddSwaggerGen(c =>
 
 // CORS
 builder.Services.AddCors(options =>
-    options.AddDefaultPolicy(p => p.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin())
-);
+{
+    options.AddPolicy("AllowAll",cors =>
+        cors.AllowAnyHeader()
+         .AllowAnyMethod()
+         .AllowAnyOrigin()
+    );
+});
 
 var app = builder.Build();
 
+// Swagger UI
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-app.UseCors();
-app.UseAuthentication();   // <---- ADD THIS
+// Pipeline
+app.UseCors("AllowAll");
+app.UseAuthentication();   // MUST BE BEFORE Authorization
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Start App
 app.Run();
