@@ -5,7 +5,7 @@ export default function AboutUs() {
     {
       name: "Sashidhar Jagdishan",
       role: "Chief Executive Officer (CEO)",
-      img: "https://www.livemint.com/lm-img/img/2023/09/19/600x338/40927de8-e61c-11ea-aeeb-bfe0af332d92_1602938808934_1602938842730_1695123990051.jpg%22",
+      img: "https://tse2.mm.bing.net/th/id/OIP.ipe4eCnJ16O-3W1rZr7fdQHaEK?rs=1&pid=ImgDetMain&o=7&rm=3",
     },
     {
       name: "Ramesh Lakshminarayanan",
