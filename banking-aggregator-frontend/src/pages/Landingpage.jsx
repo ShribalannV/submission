@@ -1,38 +1,57 @@
-import React from 'react';
-import { FaUniversity, FaWallet, FaExchangeAlt } from 'react-icons/fa';
+import React from "react";
  
 export default function LandingPage() {
   return (
-    <section className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 flex flex-col items-center justify-center p-8">
-      {/* Header */}
-      <h1 className="text-4xl md:text-5xl font-extrabold text-blue-900 mb-10 text-center">
-        Welcome to <span className="text-blue-600">Banking Aggregator</span>
-      </h1>
+    <section className="min-h-screen bg-gradient-to-br from-blue-50 to-blue-200 flex flex-col items-center justify-center p-8">
+      {/* Hero Section */}
+      <div className="text-center max-w-3xl mb-16 animate-fadeIn">
+        <h1 className="text-6xl font-extrabold text-blue-900 leading-tight drop-shadow-md">
+          Banking Made  
+          <span className="text-blue-600"> Simple, Smart & Secure</span>
+        </h1>
  
-      {/* Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-6xl">
-       
+        <p className="mt-4 text-xl text-gray-700">
+          Manage all your bank accounts in one powerful dashboard.  
+          <span className="font-semibold text-blue-700"> Track. Control. Simplify.</span>
+        </p>
+ 
+        <p className="mt-2 text-lg italic text-gray-600">
+          “Your money. One place. Total clarity.”
+        </p>
+      </div>
+ 
+      {/* Cards Section */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl w-full px-6">
+ 
         {/* Card 1 */}
-        <div className="p-8 bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer flex flex-col items-center text-center border border-gray-200 hover:border-blue-500">
-          <FaUniversity className="text-blue-600 text-6xl mb-6" />
-          <h2 className="text-2xl font-semibold text-gray-800 mb-3">Link Banks</h2>
-          <p className="text-gray-600 text-sm">Connect your bank accounts securely in one place.</p>
+        <div className="bg-white/60 backdrop-blur-xl shadow-xl rounded-2xl p-8 hover:scale-105 transition-transform duration-300 border border-white/40">
+          <h3 className="text-2xl font-bold text-blue-800 mb-4">Unified Dashboard</h3>
+          <p className="text-gray-700">
+            Get a 360° view of all your bank accounts in one secure platform.
+          </p>
         </div>
  
         {/* Card 2 */}
-        <div className="p-8 bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer flex flex-col items-center text-center border border-gray-200 hover:border-green-500">
-          <FaWallet className="text-green-600 text-6xl mb-6" />
-          <h2 className="text-2xl font-semibold text-gray-800 mb-3">View Accounts</h2>
-          <p className="text-gray-600 text-sm">Check balances and details of all your linked accounts.</p>
+        <div className="bg-white/60 backdrop-blur-xl shadow-xl rounded-2xl p-8 hover:scale-105 transition-transform duration-300 border border-white/40">
+          <h3 className="text-2xl font-bold text-blue-800 mb-4">Fast Transactions</h3>
+          <p className="text-gray-700">
+            Track deposits, withdrawals & transfers in real time without hassle.
+          </p>
         </div>
  
         {/* Card 3 */}
-        <div className="p-8 bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer flex flex-col items-center text-center border border-gray-200 hover:border-purple-500">
-          <FaExchangeAlt className="text-purple-600 text-6xl mb-6" />
-          <h2 className="text-2xl font-semibold text-gray-800 mb-3">Transactions</h2>
-          <p className="text-gray-600 text-sm">Deposit, withdraw, and view transaction history easily.</p>
+        <div className="bg-white/60 backdrop-blur-xl shadow-xl rounded-2xl p-8 hover:scale-105 transition-transform duration-300 border border-white/40">
+          <h3 className="text-2xl font-bold text-blue-800 mb-4">Top-Tier Security</h3>
+          <p className="text-gray-700">
+            Bank-level encryption and authentication keeps your data protected.
+          </p>
         </div>
       </div>
+ 
+      {/* Bottom tagline */}
+      <p className="mt-16 text-lg text-gray-600 font-medium tracking-wide animate-fadeIn">
+        “Your Finances. Your Control. Your Freedom.”  
+      </p>
     </section>
   );
-};
+}
