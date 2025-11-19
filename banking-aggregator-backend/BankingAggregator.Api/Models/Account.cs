@@ -13,6 +13,10 @@ namespace BankingAggregator.Api.Models
 
         public int UserId { get; set; }  // Owner
         public User ?User { get; set; }
+        public int BankId { get; set; }
+        public int BranchId { get; set; }
+        public virtual Bank Bank { get; set; }      // EF Core navigation property
+        public virtual Branch Branch { get; set; }
 
         public ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
     }

@@ -31,6 +31,8 @@ namespace BankingAggregator.Api.Controllers
                 return Unauthorized(new { message = "User not authenticated" });
 
             var accounts = await _db.Accounts
+                 .Include(a => a.Bank)
+                .Include(a => a.Branch)
                 .Where(a => !a.IsClosed)
                 .Select(a => new
                 {
@@ -38,6 +40,8 @@ namespace BankingAggregator.Api.Controllers
                     a.AccountNumber,
                     a.Balance,
                     a.IsClosed,
+                    a.Bank.BankName,
+                    a.Branch.BranchName,
                     a.CreatedAt
                 })
                 .ToListAsync();
@@ -58,6 +62,8 @@ namespace BankingAggregator.Api.Controllers
                 AccountNumber = req.AccountNumber,
                 Balance = req.InitialBalance,
                 UserId = req.UserId,
+                BankId = req.BankId,
+                BranchId = req.BranchId,
                 CreatedAt = DateTime.UtcNow
             };
 
@@ -99,5 +105,7 @@ namespace BankingAggregator.Api.Controllers
         public string AccountNumber { get; set; } = "";
         public decimal InitialBalance { get; set; }
         public int UserId { get; set; }
+        public int BankId { get; set; }
+        public int BranchId { get; set; }
     }
 }
