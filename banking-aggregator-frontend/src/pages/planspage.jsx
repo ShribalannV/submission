@@ -1,68 +1,95 @@
 import React from "react";
+import {
+  ShieldCheck,
+  PiggyBank,
+  CalendarClock,
+  Banknote,
+} from "lucide-react"; // icons
 
 export default function PlansPage() {
   const plans = [
     {
-      title: "Basic Plan",
-      price: "₹499 / month",
+      title: "Policy Protection Plan",
+      price: "Starting from ₹299 / month",
       features: [
-        "Single Account Aggregation",
-        "Basic Transaction History",
-        "Email Support",
+        "Life Coverage up to ₹10 Lakhs",
+        "Accidental Coverage",
+        "Tax Benefits under Sec 80C",
+        "Instant Claim Support",
       ],
-      color: "bg-blue-500",
+      icon: <ShieldCheck className="w-12 h-12 text-blue-600" />,
+      gradient: "from-blue-500 to-blue-700",
     },
     {
-      title: "Premium Plan",
-      price: "₹999 / month",
+      title: "Term Insurance Plan",
+      price: "Starting from ₹499 / month",
       features: [
-        "Multiple Bank Accounts",
-        "Advanced Analytics",
-        "Priority Email + Chat Support",
-        "Daily Reports",
+        "High Coverage up to ₹1 Crore",
+        "Low Premium",
+        "Financial Security for Family",
+        "Flexible Tenure Options",
       ],
-      color: "bg-purple-600",
+      icon: <Banknote className="w-12 h-12 text-purple-700" />,
+      gradient: "from-purple-500 to-purple-700",
     },
     {
-      title: "Enterprise Plan",
-      price: "₹1999 / month",
+      title: "Recurring Deposit Plan",
+      price: "Flexible Monthly Deposits",
       features: [
-        "Unlimited Accounts",
-        "AI-Powered Insights",
-        "Dedicated Account Manager",
-        "Custom Integrations",
-        "24/7 Support",
+        "Interest Rate up to 7.5%",
+        "Auto-Debit Facility",
+        "Tenure: 6 months to 10 years",
+        "Safe & Secure Return",
       ],
-      color: "bg-green-600",
+      icon: <CalendarClock className="w-12 h-12 text-green-600" />,
+      gradient: "from-green-500 to-green-700",
+    },
+    {
+      title: "Fixed Deposit Plan",
+      price: "Interest up to 8.2%",
+      features: [
+        "Guaranteed Returns",
+        "Flexible Tenure",
+        "Premature Withdrawal Options",
+        "Tax-Saver FD Available",
+      ],
+      icon: <PiggyBank className="w-12 h-12 text-orange-600" />,
+      gradient: "from-orange-500 to-orange-700",
     },
   ];
 
   return (
-    <div className="px-6 py-10 max-w-7xl mx-auto">
-      <h1 className="text-3xl font-bold text-center mb-10">Our Plans</h1>
+    <div className="px-6 py-12 max-w-7xl mx-auto">
+      <h1 className="text-4xl font-bold text-center mb-12 text-[#3A2A75]">
+        Banking Aggregator – Investment & Insurance Plans
+      </h1>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
         {plans.map((plan, index) => (
           <div
             key={index}
-            className="bg-white shadow-lg rounded-xl p-6 text-center hover:scale-105 transition-transform border"
+            className="bg-white rounded-2xl shadow-lg border hover:shadow-2xl hover:-translate-y-2 transition-all p-6 flex flex-col items-center text-center"
           >
-            <h2 className="text-2xl font-bold mb-3">{plan.title}</h2>
+            <div className="mb-4">{plan.icon}</div>
 
-            <div
-              className={`${plan.color} text-white text-lg font-semibold py-3 rounded-lg mb-4`}
+            <h2 className="text-xl font-bold mb-2">{plan.title}</h2>
+
+            <p
+              className={`text-white font-semibold py-2 px-4 rounded-full bg-gradient-to-r ${plan.gradient} mb-5`}
             >
               {plan.price}
-            </div>
+            </p>
 
-            <ul className="text-gray-700 mb-6 space-y-2">
+            <ul className="text-gray-700 space-y-2 mb-6">
               {plan.features.map((f, i) => (
-                <li key={i}>✓ {f}</li>
+                <li key={i} className="flex items-center justify-center gap-2">
+                  <span className="text-green-600 font-bold">✓</span> {f}
+                </li>
               ))}
             </ul>
 
-            <button className="px-6 py-2 bg-black text-white rounded-lg hover:bg-gray-900">
-              Choose Plan
+            <button className="px-6 py-2 bg-[#3A2A75] text-white rounded-lg hover:bg-[#2a1d57] transition">
+              Know More
             </button>
           </div>
         ))}
