@@ -1,34 +1,34 @@
 import React from "react";
-
+ 
 export default function AboutUs() {
   const team = [
     {
-      name: "John Matthews",
+      name: "Sashidhar Jagdishan",
       role: "Chief Executive Officer (CEO)",
-      img: "https://via.placeholder.com/200x200.png?text=CEO",
+      img: "https://www.livemint.com/lm-img/img/2023/09/19/600x338/40927de8-e61c-11ea-aeeb-bfe0af332d92_1602938808934_1602938842730_1695123990051.jpg%22",
     },
     {
-      name: "Sophia Lee",
+      name: "Ramesh Lakshminarayanan",
       role: "Chief Technology Officer (CTO)",
-      img: "https://via.placeholder.com/200x200.png?text=CTO",
+      img: "https://tse3.mm.bing.net/th/id/OIP.LjgWwJpXtKlEGPEkt_2MZwHaEu?rs=1&pid=ImgDetMain&o=7&rm=3%22",
     },
     {
-      name: "David Kumar",
+      name: "V Srinivasa Rangan",
       role: "Chief Financial Officer (CFO)",
-      img: "https://via.placeholder.com/200x200.png?text=CFO",
+      img: "https://boardstewardship.com/wp-content/uploads/2023/11/V.-Srinivasa-Rangan.jpg",
     },
   ];
-
+ 
   return (
     <div className="px-6 py-10 max-w-6xl mx-auto">
       <h1 className="text-3xl font-bold text-center mb-10">About Us</h1>
-
+ 
       <p className="text-center text-lg max-w-3xl mx-auto mb-12">
         We are a modern banking aggregator, providing seamless integration
         between multiple banks, accounts, and financial services. Our leadership
         team ensures innovation, security, and reliability.
       </p>
-
+ 
       {/* Team Section */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
         {team.map((member, i) => (
@@ -49,3 +49,5 @@ export default function AboutUs() {
     </div>
   );
 }
+ 
+ 
